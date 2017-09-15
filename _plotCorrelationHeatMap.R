@@ -5,22 +5,16 @@ plotCorrelationHeatMap <- function (r_file, p_file) {
   library(easypackages) # then we can do the rest in one go
   libraries("Hmisc","ggplot2","gplots","ggthemes","viridis","reshape2")
 
-  correlationMatrix <- read.csv(r_file, header = TRUE)
-  components <- as.character(correlationMatrix$X)
-  correlationMatrix <- correlationMatrix[,2:10]
+  correlationMatrix <- read.csv(r_file, header = FALSE)
+  components <- as.character(correlationMatrix$V1)
+  correlationMatrix <- correlationMatrix[,2:dim(correlationMatrix)[2]]
   correlationMatrix <- as.matrix(correlationMatrix)
   colnames(correlationMatrix) <- components
   rownames(correlationMatrix) <- components
-  correlationMatrix <- melt(as.matrix(correlationMatrix))
-
-# load useful functions
-source("https://raw.githubusercontent.com/rb643/R_Functions/master/_reorderCormat.R")
-source("https://raw.githubusercontent.com/briatte/ggcorr/master/ggcorr.R")
 
 p.mat <- as.matrix(read.csv(p_file, header = FALSE))
-reorderInd <- reorder_cormat(correlationMatrix)
-correlationMatrix <- correlationMatrix[reorderInd,reorderInd]
-p.mat <- p.mat[reorderInd,reorderInd]
+colnames(p.mat) <- components
+rownames(p.mat) <- components
 
 p.mat[lower.tri(p.mat,diag = TRUE)] <- NA
 correlationMatrix[upper.tri(correlationMatrix, diag = TRUE)] <- NA
@@ -30,8 +24,7 @@ test$value <- (test$value)
 test2 <- melt(correlationMatrix)
 test3 <- merge(test, test2, by = c("Var1","Var2"))
 
-pdf("heatmap.pdf", width = 12, height = 12)
-  ggplot(test3, aes(Var1, Var2)) +
+fig <-  ggplot(test3, aes(Var1, Var2)) +
     geom_tile(aes(fill = value.y)) +
     geom_text(aes(Var1, Var2, label = round(value.x, 4)),colour = "white") +
     geom_text(aes(Var1, Var2, label = round(value.y, 4)),colour = "black") +
@@ -59,4 +52,5 @@ pdf("heatmap.pdf", width = 12, height = 12)
       legend.title=element_blank()
     )
 
+return(fig)
 }

@@ -29,7 +29,7 @@ fig <-  ggplot(test3, aes(Var1, Var2)) +
     geom_text(aes(Var1, Var2, label = round(value.x, 4)),colour = "white") +
     geom_text(aes(Var1, Var2, label = round(value.y, 4)),colour = "black") +
     scale_fill_viridis(option='B') +
-    ggtitle("Symptom Correlations") +
+    ggtitle("Correlations") +
     theme(
       strip.text = element_text(colour = "white",face="bold", size=9,lineheight=5.0),
       strip.background = element_rect(fill="black", colour="white",size=1),
@@ -49,7 +49,7 @@ fig <-  ggplot(test3, aes(Var1, Var2)) +
       legend.text = element_text(color="white", size=rel(0.7)),
       legend.background = element_rect(fill="gray30"),
       legend.position = "bottom",
-      legend.title=element_blank()
+      legend.title=element_text(color="white", size=rel(1))
     )
 
 return(fig)

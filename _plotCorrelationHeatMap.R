@@ -1,5 +1,6 @@
-plotHeatMap <- function (r_file, p_file) {
-  # file should be a csv file of the heatmap with the column and row names in the first column
+plotCorrelationHeatMap <- function (r_file, p_file) {
+  # r_file should be a csv file of the r-values in the matrix and the first column containing the names
+  # p_file should be a csv file of the p-values in the matrix
 
   library(easypackages) # then we can do the rest in one go
   libraries("Hmisc","ggplot2","gplots","ggthemes","viridis","reshape2")
